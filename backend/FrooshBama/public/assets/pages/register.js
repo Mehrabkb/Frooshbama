@@ -1,50 +1,24 @@
-function btnVerificationClick() {
-  let mobileInput = $('#mobileInput').val();
-  const mobileRegex = /^09\d{9}$/g;
-  if (mobileInput.match(mobileRegex)) {
-    let url = "https://frooshbama.ir/verifycode.php";
-    let method = "POST";
+$("#btn-verification-code").click(function(){
+    let that = $(this);
+    let url = that.attr('data-url');
+    let mobile = $("#mobileInput").val();
     $.ajax({
-      url: url,
-      method: method,
-      data: {
-        mobile: mobileInput,
-        apiKey: "asghar",
-      },
-      success: function (result) {
-        result = JSON.parse(result);
-        if (result.status == 200) {
-          mobileInput.prop('readonly', true)
-          showAlert(result.msg, "sucess");
-          $('#btn-verification-code').prop('disabled' , true);
-          
-          setTimeout(function(){
-              $('#btn-verification-code').prop('disabled' , false);
-          } , 120000)
-        } else {
-          showAlert(result.msg, "error");
-        }
-        /*
-            {
-                status : 200,
-                message : 'با موفقیت انجام شد'
-            } 
-            OR 
-            {
-                status : 101,
-                message : 'شماره موبایل نامعتبر است'
+        url : url,
+        method : "POST",
+        data : {
+            "mobile" : mobile
+        },
+        success:function(res){
+            // res = JSON.parse(res);
+            if(res.status == 200){
+                showAlert("لطفا کد فعالسازی را وارد کنید" , "sucess");
+            }else{
+                showAlert("خطایی رخ داده است" , "error");
             }
-        
-        */
-      },
-      error: function () {
-        showAlert("خطایی در ارسال کد رخ داده است", "sucess");
-      },
-    });
-  } else {
-    showAlert("شماره موبایل نامعتبر است", "error");
-  }
-}
+
+        }
+    })
+})
 
 function showAlert(msg, type) {
   let alertF = document.querySelector(".alert-section");

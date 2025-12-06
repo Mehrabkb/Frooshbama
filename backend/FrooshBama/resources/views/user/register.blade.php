@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ثبت نام / ورود | فروش باما</title>
+      <meta name="csrf-token" content="{{ csrf_token() }}">
+
+      <title>ثبت نام / ورود | فروش باما</title>
     <link rel="stylesheet" href="{{ asset('assets/myassets/default.css')  }}" />
     <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/all.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.rtl.min.css')}}" />
@@ -11,14 +13,15 @@
     <link rel="icon" type="image" href="{{ asset('images/logo.svg')}}">
   </head>
   <body>
-    
+
     <div class="register-container">
       <form class="right-section" action="{{ route('login') }}" method="POST">
+          @csrf
         <div class="form-container">
           <p>شماره موبایل</p>
           <div class="number-container">
             <input type="tel" inputmode="tel" placeholder="مثال: *********09" id="mobileInput">
-            <button type="button" id="btn-verification-code" onclick="btnVerificationClick()">ارسال کد</button>
+            <button type="button" id="btn-verification-code" data-url="{{ route('confirm.code') }}" >ارسال کد</button>
           </div>
         <p>کد فعالسازی</p>
         <input type="number" id="verificationInput" placeholder="کد را اینجا وارد کنید" onkeyup="verification_input_code_change(this)">
@@ -41,6 +44,13 @@
     </div>
 
     <script src="{{ asset('assets/jquery/jquery.min.js')}}"></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
     <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
     <script src="{{ asset('assets/fontawesome/js/all.min.js')}}"></script>
     <script src="{{ asset('assets/myassets/myscript.js')}}"></script>
