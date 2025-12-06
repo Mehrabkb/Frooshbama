@@ -30,7 +30,7 @@ class LoginController extends Controller
                 $code = rand(1000, 9999);
                 $msg ="کد فعالسازی شما : $code";
                 $sendSms = new KavenegarService( );
-                $sms = $sendSms->sendSms($mobile , $msg);
+                $sms = $sendSms->sendSms([$mobile] , $msg);
                 if($sms){
                     return response()->json(["status" => 200]);
                 }
